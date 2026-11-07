@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roby Karan Singh</title>
+<meta name="description" content="Roby Karan Singh: electronic and electrical engineer (BEng, First Class) with an MSc in Computer Science. Controls and automation, robotics, embedded systems and RF/antenna research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: an engineering drawing sheet. Ruled frame, a title block of facts,
+   one live instrument (antenna array pattern) in the hero, pipelines drawn as block diagrams. */
+:root{
+  --paper:#EDF0F2;
+  --surface:#F8FAFB;
+  --ink:#0F1C2A;
+  --muted:#556474;
+  --line:#C6CFD7;
+  --accent:#C8460D;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C131A; --surface:#121C26; --ink:#E2E9EF; --muted:#94A4B3;
+    --line:#26343F; --accent:#FF7D3D; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C131A; --surface:#121C26; --ink:#E2E9EF; --muted:#94A4B3;
+  --line:#26343F; --accent:#FF7D3D; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased}
+a{color:inherit; text-decoration-color:var(--accent); text-underline-offset:3px; text-decoration-thickness:1.5px}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+.sheet{max-width:1180px; margin:20px auto; padding:0 clamp(16px,4vw,48px); border-left:1px solid var(--line); border-right:1px solid var(--line)}
+@media (max-width:720px){ .sheet{border:0; margin-top:0} }
+
+.mono{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em}
+.eyebrow{font-family:var(--mono); font-size:.76rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+h1,h2,h3{font-family:var(--display); text-wrap:balance; margin:0; line-height:1.08}
+h2{font-size:clamp(1.9rem,3.6vw,2.7rem); font-weight:800; font-stretch:118%; letter-spacing:-.01em}
+h3{font-size:1.28rem; font-weight:700; font-stretch:108%; line-height:1.2}
+p{margin:0; max-width:65ch}
+
+.top{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 0; border-bottom:1px solid var(--line)}
+.mark{font-family:var(--display); font-weight:800; font-stretch:125%; font-size:1rem; letter-spacing:.02em; text-decoration:none}
+.mark span{color:var(--accent)}
+nav{display:flex; gap:20px; flex-wrap:wrap}
+nav a{font-family:var(--mono); font-size:.8rem; text-decoration:none; color:var(--muted)}
+nav a:hover{color:var(--ink)}
+
+/* Hero */
+.hero{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:clamp(24px,4vw,56px); padding:clamp(36px,6vw,72px) 0 36px; align-items:center}
+@media (max-width:900px){ .hero{grid-template-columns:1fr} }
+.hero h1{font-size:clamp(2.6rem,6.4vw,5rem); font-weight:850; font-stretch:125%; letter-spacing:-.02em; line-height:.98; margin:14px 0 22px}
+.hero h1 em{font-style:normal; color:var(--accent)}
+.hero .lede{font-size:1.12rem}
+.hero .lede + .lede{margin-top:12px; color:var(--muted); font-size:1rem}
+.actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:28px}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:11px 18px; font-family:var(--mono); font-size:.82rem; text-decoration:none; border:1.5px solid var(--ink); color:var(--ink); background:transparent; border-radius:2px; transition:background .15s, color .15s}
+.btn:hover{background:var(--ink); color:var(--paper)}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+.btn.primary:hover{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+
+.instrument{border:1px solid var(--line); background:var(--surface); padding:16px 16px 12px; margin:0}
+.instrument-head{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted)}
+#beam{display:block; width:100%; height:auto; aspect-ratio:2/1.12; margin-top:6px}
+.readout{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; border-top:1px solid var(--line); padding-top:10px; margin-top:4px; font-variant-numeric:tabular-nums}
+.readout div{display:flex; flex-direction:column}
+.readout b{font-family:var(--mono); font-weight:500; font-size:.95rem}
+.readout .k{font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+.instrument .cap{margin-top:10px; color:var(--muted); font-size:.85rem; max-width:none}
+.formula{display:block; margin-top:6px; font-family:var(--mono); font-size:.8rem; color:var(--ink); overflow-x:auto; white-space:nowrap}
+
+.titleblock{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--ink)}
+.titleblock > div{padding:12px 14px; border-right:1px solid var(--ink)}
+.titleblock > div:last-child{border-right:0}
+.titleblock .k{font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted)}
+.titleblock .v{font-weight:600; font-size:.95rem; line-height:1.35; margin-top:2px}
+@media (max-width:820px){
+  .titleblock{grid-template-columns:1fr 1fr}
+  .titleblock > div:nth-child(2){border-right:0}
+  .titleblock > div:nth-child(-n+2){border-bottom:1px solid var(--ink)}
+}
+@media (max-width:440px){
+  .titleblock{grid-template-columns:1fr}
+  .titleblock > div{border-right:0; border-bottom:1px solid var(--ink)}
+  .titleblock > div:last-child{border-bottom:0}
+}
+
+section{padding:clamp(56px,8vw,96px) 0 0}
+.sec-head{display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; padding-bottom:18px; border-bottom:1.5px solid var(--ink); margin-bottom:28px}
+.sec-intro{color:var(--muted); margin:-8px 0 28px; max-width:70ch}
+
+/* Feature blocks */
+.feature{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(24px,4vw,48px); padding-bottom:36px; margin-bottom:8px; border-bottom:1px solid var(--line)}
+@media (max-width:900px){ .feature{grid-template-columns:1fr} }
+.feature h3{font-size:clamp(1.5rem,2.6vw,2rem); font-stretch:115%; font-weight:800; margin-top:8px}
+.meta{display:flex; flex-wrap:wrap; gap:6px 14px; margin:10px 0 16px; color:var(--muted)}
+.meta .hl{color:var(--accent)}
+.feature p + p{margin-top:12px}
+.stack{display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding:0; list-style:none}
+.stack li{font-family:var(--mono); font-size:.72rem; padding:3px 8px; border:1px solid var(--line); border-radius:2px; color:var(--muted); background:var(--surface)}
+.more{display:inline-block; margin-top:16px; margin-right:18px; font-family:var(--mono); font-size:.82rem}
+
+/* Diagrams */
+.diagram{border:1px solid var(--line); background:var(--surface); padding:18px; align-self:start}
+.diagram > .eyebrow{margin-bottom:14px}
+.blocks{display:grid; grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr); align-items:stretch}
+.blk{border:1.5px solid var(--ink); padding:12px; background:var(--paper)}
+.blk .name{font-family:var(--display); font-weight:800; font-stretch:115%; font-size:1rem; line-height:1.2}
+.blk ul{margin:8px 0 0; padding:0; list-style:none; font-family:var(--mono); font-size:.72rem; color:var(--muted); display:grid; gap:4px}
+.blk ul li::before{content:"› "; color:var(--accent)}
+.link{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-family:var(--mono); font-size:.62rem; color:var(--muted); text-align:center}
+.wire{width:100%; height:0; border-top:1.5px dashed var(--accent); position:relative}
+.wire::after{content:""; position:absolute; right:-1px; top:-5px; border:4.5px solid transparent; border-left:7px solid var(--accent)}
+.io{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px}
+.io div{border:1px dashed var(--line); padding:8px; font-family:var(--mono); font-size:.68rem; color:var(--muted); text-align:center}
+.io b{display:block; color:var(--ink); font-weight:500}
+@media (max-width:520px){
+  .blocks{grid-template-columns:1fr}
+  .link{padding:10px 0}
+  .wire{width:0; height:28px; border-top:0; border-left:1.5px dashed var(--accent)}
+  .wire::after{right:auto; left:-5.5px; top:auto; bottom:-2px; border:4.5px solid transparent; border-top:7px solid var(--accent)}
+}
+
+/* Vertical pipeline */
+.pipe{display:grid; gap:0; counter-reset:step}
+.pipe .stage{display:grid; grid-template-columns:34px minmax(0,1fr); gap:12px; align-items:start; position:relative; padding-bottom:16px}
+.pipe .stage:last-child{padding-bottom:0}
+.pipe .stage::before{counter-increment:step; content:counter(step); width:34px; height:34px; display:grid; place-items:center; border:1.5px solid var(--ink); background:var(--paper); font-family:var(--mono); font-size:.8rem; position:relative; z-index:1}
+.pipe .stage:not(:last-child)::after{content:""; position:absolute; left:16.5px; top:34px; bottom:0; border-left:1.5px dashed var(--accent)}
+.pipe .stage b{display:block; font-family:var(--display); font-stretch:110%; font-weight:700; font-size:.98rem; line-height:1.25; padding-top:5px}
+.pipe .stage span{display:block; font-family:var(--mono); font-size:.72rem; color:var(--muted); margin-top:2px}
+
+/* Card grid */
+.projects{display:grid; grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:760px){ .projects{grid-template-columns:1fr} }
+.proj{padding:28px 28px 28px 0; border-bottom:1px solid var(--line); display:flex; flex-direction:column}
+.proj:nth-child(2n){padding:28px 0 28px 28px; border-left:1px solid var(--line)}
+@media (max-width:760px){ .proj, .proj:nth-child(2n){padding:24px 0; border-left:0} }
+.proj h3{margin:8px 0 10px}
+.proj p{font-size:.98rem}
+.proj p + p{margin-top:10px}
+.proj .stack{margin-top:auto; padding-top:16px}
+.sub-head{display:flex; justify-content:space-between; align-items:end; gap:12px; flex-wrap:wrap; margin:56px 0 0; padding-bottom:12px; border-bottom:1px solid var(--ink)}
+.sub-head h3{font-size:1.4rem; font-stretch:115%; font-weight:800}
+
+.note{margin-top:20px; padding:12px 14px; border-left:3px solid var(--accent); background:var(--surface); font-size:.9rem; color:var(--muted); max-width:none}
+
+/* Experience */
+.job{display:grid; grid-template-columns:200px minmax(0,1fr); gap:24px; padding:24px 0; border-bottom:1px solid var(--line)}
+@media (max-width:700px){ .job{grid-template-columns:1fr; gap:6px} }
+.job .when{font-family:var(--mono); font-size:.8rem; color:var(--muted); font-variant-numeric:tabular-nums}
+.job .when b{display:block; color:var(--ink); font-weight:500}
+.job .org{color:var(--muted); font-size:.95rem; margin-top:2px}
+.job ul{margin:10px 0 0; padding-left:18px; max-width:74ch}
+.job li{margin:4px 0; font-size:.97rem}
+.job li::marker{color:var(--accent)}
+.job.current .when b::before{content:"● "; color:var(--accent)}
+
+/* Skills */
+.skills{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); border-top:1px solid var(--line)}
+.skill{padding:20px 20px 20px 0; border-bottom:1px solid var(--line)}
+.skill h3{font-size:1rem; margin-bottom:10px}
+.skill ul{margin:0; padding:0; list-style:none; display:grid; gap:4px; font-size:.95rem}
+
+/* Education */
+.edu{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px}
+@media (max-width:820px){ .edu{grid-template-columns:1fr} }
+.edu .card{border-top:3px solid var(--ink); padding-top:14px}
+.edu .grade{font-family:var(--display); font-weight:800; font-stretch:120%; font-size:1.5rem; color:var(--accent); line-height:1.1; margin:6px 0}
+.edu p{font-size:.95rem; color:var(--muted)}
+.honors{margin-top:36px; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); border:1px solid var(--line)}
+.honors div{padding:14px 16px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); margin:-1px -1px 0 0}
+.honors .yr{font-family:var(--mono); font-size:.72rem; color:var(--accent)}
+.honors .t{font-weight:600; line-height:1.35; margin-top:2px}
+
+/* Contact */
+.contact{display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:32px; align-items:start; padding-bottom:56px}
+@media (max-width:820px){ .contact{grid-template-columns:1fr} }
+.contact dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:10px 20px}
+.contact dt{font-family:var(--mono); font-size:.74rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); padding-top:3px}
+.contact dd{margin:0; word-break:break-word}
+.copy{margin-left:8px; font-family:var(--mono); font-size:.7rem; padding:2px 8px; border:1px solid var(--line); background:var(--surface); color:var(--muted); cursor:pointer; border-radius:2px}
+.copy:hover{color:var(--ink); border-color:var(--ink)}
+
+footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="top">
+  <a class="mark" href="#top" id="top">ROBY KARAN SINGH<span>.</span></a>
+  <nav aria-label="Sections">
+    <a href="#research">RF research</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div>
+    <div class="eyebrow">BEng Electronic &amp; Electrical Eng. · MSc Computer Science</div>
+    <h1>From the antenna to the <em>actuator.</em></h1>
+    <p class="lede">I'm an engineer who works across the whole stack of a machine: antennas and RF, circuits, embedded code and the industrial robots at the end of the line.</p>
+    <p class="lede">At Swansea University's Smart Antenna Lab I built anti-jamming software and ran the lab demonstration of a UK defence-funded wideband beam- and null-steering system. For my MSc I built a socially assistive robot. Today I commission Kawasaki robot workcells and Omron PLC systems on a 24/7 production floor in Michigan.</p>
+    <div class="actions">
+      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn" href="https://www.linkedin.com/in/roby-ksingh/">LinkedIn ↗</a>
+      <a class="btn" href="https://github.com/Robysingh">GitHub ↗</a>
+    </div>
+  </div>
+
+  <figure class="instrument">
+    <div class="instrument-head mono"><span>ARRAY FACTOR · 8-ELEMENT ULA · d = λ/2</span><span>GPS L1 · 1575.42 MHz</span></div>
+    <canvas id="beam" width="1000" height="560" role="img" aria-label="Polar plot of an 8-element antenna array steering its main beam while holding a null on a jamming signal"></canvas>
+    <div class="readout">
+      <div><span class="k">Main beam</span><b id="r-beam">+5.0°</b></div>
+      <div><span class="k">Null on jammer</span><b id="r-null">−48.0°</b></div>
+      <div><span class="k">Gain at jammer</span><b id="r-depth">&lt; −60 dB</b></div>
+    </div>
+    <figcaption class="cap">Computed live in your browser with the same null-steering projection I implemented in MATLAB for my anti-jamming research:
+      <code class="formula">w = w<sub>d</sub> − w<sub>n</sub> · (w<sub>n</sub><sup>H</sup> w<sub>d</sub>) / (w<sub>n</sub><sup>H</sup> w<sub>n</sub>)</code>
+    </figcaption>
+  </figure>
+</div>
+
+<div class="titleblock" role="list">
+  <div role="listitem"><div class="k">Based</div><div class="v">Detroit area, Michigan</div></div>
+  <div role="listitem"><div class="k">Work status</div><div class="v">US Permanent Resident · no sponsorship needed</div></div>
+  <div role="listitem"><div class="k">Relocation</div><div class="v">Open to the West Coast (CA · WA · OR)</div></div>
+  <div role="listitem"><div class="k">Looking for</div><div class="v">Controls · Robotics · Embedded · RF</div></div>
+</div>
+
+<!-- RF RESEARCH -->
+<section id="research" aria-labelledby="h-research">
+  <div class="sec-head">
+    <h2 id="h-research">RF &amp; antenna research</h2>
+    <span class="eyebrow">Smart Antenna &amp; Communications Lab · 2022 – 2024</span>
+  </div>
+  <p class="sec-intro">Protecting navigation and communication links from jamming: finding where interference comes from, then reshaping an antenna array's pattern to ignore it. I worked from algorithm to simulation to working hardware.</p>
+
+  <article class="feature">
+    <div>
+      <div class="eyebrow">UK defence-funded project · final phase · 2023 – 24</div>
+      <h3>Wideband anti-jamming demonstrator</h3>
+      <div class="meta mono"><span class="hl">Lab demo + final report</span><span>Beam steering</span><span>Null steering</span></div>
+      <p>A communication system designed to keep a link working while it is being jammed. I carried the project through its final phase: I set up and ran the laboratory demonstration and wrote the final milestone report for the funder.</p>
+      <p>I wrote the control software from scratch in GNU Radio: a Python flow graph that drives a software-defined radio, sets the phase, amplitude and frequency of each transmit channel, and searches for the weights that steer a null onto the jammer.</p>
+      <ul class="stack"><li>GNU Radio (Python)</li><li>Software-defined radio</li><li>Beam / null steering</li><li>Technical reporting</li></ul>
+    </div>
+    <div class="diagram" aria-label="My role on the project">
+      <div class="eyebrow">My role</div>
+      <div class="pipe">
+        <div class="stage"><div><b>Wrote the SDR control software</b><span>GNU Radio flow graph in Python, from scratch</span></div></div>
+        <div class="stage"><div><b>Set up and ran the lab demonstration</b><span>beam and null steering on hardware</span></div></div>
+        <div class="stage"><div><b>Wrote the final milestone report</b><span>delivered to the project funder</span></div></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="feature">
+    <div>
+      <div class="eyebrow">Research &amp; teaching software · IEEE publication · 2023</div>
+      <h3>MUSIC and pattern-synthesis anti-jamming app</h3>
+      <div class="meta mono"><span class="hl">Presented at IEEE AP-S / USNC-URSI 2023, Portland</span></div>
+      <p>An interactive MATLAB application for teaching and researching adaptive arrays. You configure a rectangular array (rows, columns, spacing, carrier frequency), drop in one to four interfering signals or random ones, and the app estimates their directions with the MUSIC algorithm, computes null-steering weights, and animates the resulting pattern in polar, rectangular and 3D views.</p>
+      <p>I wrote the app and the null-steering algorithm, and paired them with a colleague's MUSIC estimator. The app exports its weights so they can be checked in full electromagnetic simulation.</p>
+      <ul class="stack"><li>MATLAB App Designer</li><li>Phased Array System Toolbox</li><li>MUSIC DoA</li><li>Sidelobe canceller</li></ul>
+      <a class="more" href="https://doi.org/10.1109/USNC-URSI52151.2023.10238045">Read the paper (DOI) ↗</a>
+    </div>
+    <div class="diagram" aria-label="Simulation pipeline">
+      <div class="eyebrow">Algorithm → simulation pipeline I built</div>
+      <div class="pipe">
+        <div class="stage"><div><b>Estimate interference directions</b><span>MUSIC 2D estimator, AIC signal count</span></div></div>
+        <div class="stage"><div><b>Compute null-steering weights</b><span>steering vectors · projection · polar form</span></div></div>
+        <div class="stage"><div><b>Export weights.txt</b><span>amplitude, phase per element</span></div></div>
+        <div class="stage"><div><b>Apply in CST with a VBA macro</b><span>sets every port, runs Combine Results</span></div></div>
+        <div class="stage"><div><b>Verify the far-field pattern</b><span>beam and null cases on a 3×3 array</span></div></div>
+      </div>
+    </div>
+  </article>
+
+  <div class="projects">
+    <article class="proj">
+      <div class="eyebrow">GNSS anti-jamming · GPS L1</div>
+      <h3>2×2 patch array for GPS</h3>
+      <p>Designed and simulated a 2×2 patch antenna array at 1.575 GHz in CST, iterating through ground plane, slotted ground, reflector, cavity and frequency-selective-surface variants. Steering the phase of two elements against two reference elements placed a null about 40 dB deep in the chosen direction.</p>
+      <ul class="stack"><li>CST Studio Suite</li><li>Patch antennas</li><li>FSS</li><li>Far-field analysis</li></ul>
+    </article>
+    <article class="proj">
+      <div class="eyebrow">Drone anti-jamming · with the UK MoD</div>
+      <h3>Automated backlobe suppression search</h3>
+      <p>For a 2×2 drone antenna array, I wrote MATLAB scripts that sweep over a thousand phase and amplitude combinations against simulated pattern data and table every combination that produces a null at a given angle. Over six versions the tool went from a manual 8-angle check to a fully automated sweep from 80° to 280°.</p>
+      <ul class="stack"><li>MATLAB Live Scripts</li><li>Pattern data processing</li><li>Automation</li></ul>
+    </article>
+  </div>
+  <p class="note">Some of this work was carried out under defence contracts and is confidential, so I describe it here only at a high level.</p>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" aria-labelledby="h-projects">
+  <div class="sec-head">
+    <h2 id="h-projects">Robotics &amp; engineering projects</h2>
+    <span class="eyebrow">2018 – 2025</span>
+  </div>
+
+  <article class="feature">
+    <div>
+      <div class="eyebrow">MSc dissertation · Swansea University · 2025</div>
+      <h3>Nova: a customisable robot companion for older adults and people with dementia</h3>
+      <div class="meta mono"><span class="hl">Mark: 87%</span><span>User study: 10 participants</span><span>Build cost: ≈ £135</span></div>
+      <p>Commercial robot pets like PARO and Joy for All are expensive and repeat the same behaviour, so users lose interest. I built Nova, a robotic dog whose responses the user chooses: which sound it makes when you stroke its head, body or cheek, depending on your mood.</p>
+      <p>A Raspberry Pi 4 reads the user's facial expression and listens for its name; a Raspberry Pi Pico handles touch, motion and sound in real time. A 10-person user study (NARS scale) gave statistically significant results, and feedback showed that personalisation made the interaction more engaging.</p>
+      <ul class="stack"><li>Python</li><li>Raspberry Pi 4</li><li>Pi Pico</li><li>DeepFace</li><li>openWakeWord / ONNX</li><li>PWM servos</li><li>I2S audio</li><li>Capacitive touch</li></ul>
+      <a class="more" href="https://lnkd.in/egHV5xuZ">Watch the demo videos ↗</a>
+    </div>
+    <div class="diagram" aria-label="System block diagram of Nova">
+      <div class="eyebrow">System block diagram</div>
+      <div class="blocks">
+        <div class="blk">
+          <div class="name">Raspberry Pi 4</div>
+          <ul><li>Camera → DeepFace (SSD)</li><li>Emotion every 5th frame</li><li>7 moods → codes 1–7</li><li>Wake words "Nova", "Hey Nova"</li></ul>
+        </div>
+        <div class="link"><span>UART</span><div class="wire"></div><span>9600 baud</span></div>
+        <div class="blk">
+          <div class="name">Raspberry Pi Pico</div>
+          <ul><li>3 capacitive touch zones</li><li>Head + tail servos, 50 Hz</li><li>I2S audio, 16 kHz mono</li><li>Mood → sound map</li></ul>
+        </div>
+      </div>
+      <div class="io">
+        <div><b>Touch</b>head · body · cheek</div>
+        <div><b>Motion</b>head · tail</div>
+        <div><b>Sound</b>13 user-selectable clips</div>
+      </div>
+    </div>
+  </article>
+
+  <div class="projects">
+    <article class="proj">
+      <div class="eyebrow">Invent for the Planet · 48 hours · 2025</div>
+      <h3>Vapoura: passive saltwater cooling for data centres</h3>
+      <p>Cooling is about half of a data centre's power draw. Our team designed a zero-energy unit that cools liquid loops with humid outdoor air and saltwater through a porous PTFE membrane, saving freshwater too. Three stacked units were estimated to cut a 130 kW site's power use by about 12%. Won the Royal Academy of Engineering's Most Innovative Engineering Idea award among 700+ students from 40+ universities.</p>
+      <ul class="stack"><li>Thermal design</li><li>Cost model ≈ $5,150 / unit</li><li>Team of 6</li></ul>
+    </article>
+    <article class="proj">
+      <div class="eyebrow">Robotics module · BEng · 2021</div>
+      <h3>Car-like robot for gas-leak monitoring</h3>
+      <p>A kinematic model of a car-like robot carrying GPS, a compass and a metal-oxide gas sensor. I generated smooth trajectories with 4th-order polynomials, tracked them with a PID controller, handled side slip with an offset reference point, and avoided obstacles with an artificial potential field.</p>
+      <ul class="stack"><li>MATLAB</li><li>Simulink</li><li>PID</li><li>Kinematics</li><li>APF path planning</li></ul>
+    </article>
+    <article class="proj">
+      <div class="eyebrow">Group design exercise · Team manager · 2021</div>
+      <h3>Team Delta Micromouse</h3>
+      <p>An autonomous differential-drive robot with collision awareness, line tracking and a combat mode. I was team manager for a group of five, ran the project plan and built the team website. The robot used an AW60 microcontroller, IR collision and touch-bar sensors, an LDR line sensor, wheel encoders and a battery monitor.</p>
+      <a class="more" href="https://teamdelta2021.wordpress.com/">Team site ↗</a>
+      <ul class="stack"><li>Freescale AW60</li><li>Sensors</li><li>PCB build</li><li>Project management</li></ul>
+    </article>
+    <article class="proj">
+      <div class="eyebrow">Power electronics · BEng · 2021</div>
+      <h3>Rectifier and PWM inverter design</h3>
+      <p>Designed and simulated a thyristor full-wave rectifier and an IGBT full-bridge inverter. Adding bipolar sinusoidal PWM at 5 kHz brought output distortion down from 18.7% to 3.98% THD, within the IEEE 519 limit of 5%.</p>
+      <ul class="stack"><li>Simulink</li><li>Thyristors</li><li>IGBTs</li><li>PWM</li></ul>
+    </article>
+    <article class="proj">
+      <div class="eyebrow">Electrical machines lab · BEng · 2020</div>
+      <h3>DC motor speed control</h3>
+      <p>Compared field-resistance, armature-voltage and armature-resistance speed control on a DC motor in the lab, then modelled a permanent-magnet DC motor in Simulink and tuned a PI speed controller against it.</p>
+      <ul class="stack"><li>Simulink</li><li>PI control</li><li>Motor modelling</li></ul>
+    </article>
+    <article class="proj">
+      <div class="eyebrow">Diploma project · ITIS E. Fermi, Mantua · 2018</div>
+      <h3>Gesture-controlled robot</h3>
+      <p>Tilt your hand and the robot drives. An accelerometer on the hand encodes the gesture and sends it over a 433 MHz RF link to the robot, which decodes it and drives the motors. I designed both the transmitter and receiver PCBs.</p>
+      <ul class="stack"><li>Arduino Nano</li><li>ADXL335</li><li>HT12E / HT12D</li><li>433 MHz RF</li><li>L293D</li><li>OrCAD PCB</li></ul>
+    </article>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" aria-labelledby="h-exp">
+  <div class="sec-head">
+    <h2 id="h-exp">Experience</h2>
+    <span class="eyebrow">Italy → Germany → Wales → Michigan</span>
+  </div>
+  <div>
+    <article class="job current">
+      <div class="when"><b>Apr 2026 – now</b>Livonia, MI</div>
+      <div>
+        <h3>Automation Technician</h3>
+        <div class="org">NYX Inc.</div>
+        <ul>
+          <li>Commission and wire control panels for Kawasaki R-Series robotic workcells: 24 V DC distribution, I/O modules and safety circuits.</li>
+          <li>Integrate and debug Omron CJ2M PLCs, verifying I/O and diagnosing faults live in CX-Programmer.</li>
+          <li>Configure Keyence GC-1000 safety controllers for E-stops, gate interlocks, light curtains and motor power isolation.</li>
+          <li>Troubleshoot robot-to-PLC communication in automated pick-and-place cells, and plumb PLC-driven vacuum end-of-arm tooling.</li>
+        </ul>
+      </div>
+    </article>
+    <article class="job">
+      <div class="when"><b>Jun 2022 – Mar 2024</b>Swansea, UK</div>
+      <div>
+        <h3>Research Assistant, Smart Antennas</h3>
+        <div class="org">Smart Antenna &amp; Communications Laboratory, Swansea University · team leader (2023–24)</div>
+        <ul>
+          <li>Ran the final phase of a UK defence-funded anti-jamming project: wrote the SDR control software in GNU Radio from scratch, ran the lab demonstration and wrote the final milestone report.</li>
+          <li>Researched GPS L1 antennas, beam steering, null steering and anti-jamming, including drone anti-jamming work with the UK Ministry of Defence.</li>
+          <li>Wrote the final report for CASSIS, an ESA ARTES project on Ka-band satellite antennas for vehicles, and attended weekly progress meetings with Satellite Applications Catapult.</li>
+          <li>Built a MATLAB-to-CST simulation pipeline and an anti-jamming app published at IEEE AP-S / USNC-URSI 2023.</li>
+          <li>Fabricated antennas in the lab on a ProtoMat S63 CNC milling machine.</li>
+        </ul>
+      </div>
+    </article>
+    <article class="job">
+      <div class="when"><b>Jan 2025 – Apr 2025</b>Swansea, UK</div>
+      <div>
+        <h3>Teaching Assistant, Computer Science</h3>
+        <div class="org">Swansea University</div>
+        <ul><li>Supported undergraduate Java and object-oriented programming labs; marked weekly tasks and helped students debug.</li></ul>
+      </div>
+    </article>
+    <article class="job">
+      <div class="when"><b>Jun 2021 – Jul 2021</b>Swansea, UK</div>
+      <div>
+        <h3>Summer Intern</h3>
+        <div class="org">Swansea University</div>
+        <ul><li>Built simulations and experiments on electricity and magnetism for foundation-year students.</li></ul>
+      </div>
+    </article>
+    <article class="job">
+      <div class="when"><b>Mar 2019 – Aug 2019</b>Lombardy, Italy</div>
+      <div>
+        <h3>Maintenance Engineer</h3>
+        <div class="org">Gruppo Mauro Saviola</div>
+        <ul><li>Repaired and maintained electrical systems; diagnosed faults in electrical machines; tested electronics.</li></ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" aria-labelledby="h-skills">
+  <div class="sec-head">
+    <h2 id="h-skills">Skills</h2>
+    <span class="eyebrow">Used on real hardware, not just studied</span>
+  </div>
+  <div class="skills">
+    <div class="skill">
+      <h3>Industrial automation</h3>
+      <ul><li>Omron CJ2M PLCs, CX-Programmer</li><li>Kawasaki R-Series robot cells</li><li>Keyence GC-1000 safety controllers</li><li>Control panel wiring, 24 V DC</li><li>Pneumatics, vacuum EOAT</li><li>Ladder logic</li></ul>
+    </div>
+    <div class="skill">
+      <h3>RF &amp; signal processing</h3>
+      <ul><li>Phased arrays: beam and null steering</li><li>MUSIC direction finding</li><li>CST Studio Suite, VBA automation</li><li>Software-defined radio, GNU Radio</li><li>GNSS (GPS L1) antennas</li></ul>
+    </div>
+    <div class="skill">
+      <h3>Embedded &amp; hardware</h3>
+      <ul><li>Embedded C</li><li>STM32, Arduino, Raspberry Pi / Pico</li><li>FPGA: VHDL, AHDL (Quartus)</li><li>PCB design: OrCAD, KiCad</li><li>PCB fabrication, CNC milling, soldering</li></ul>
+    </div>
+    <div class="skill">
+      <h3>Software &amp; ML</h3>
+      <ul><li>Python, MATLAB / Simulink, Java, C++</li><li>MATLAB App Designer</li><li>Computer vision (DeepFace)</li><li>SQL (MariaDB / MySQL)</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" aria-labelledby="h-edu">
+  <div class="sec-head">
+    <h2 id="h-edu">Education</h2>
+    <span class="eyebrow">Swansea University, Wales · 2019 – 2025</span>
+  </div>
+  <div class="edu">
+    <div class="card">
+      <div class="eyebrow">2025</div>
+      <h3 style="margin-top:6px">MSc Computer Science</h3>
+      <div class="grade">Distinction</div>
+      <p>Swansea University. Dissertation on customisable interactive robotics (87%).</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">2022</div>
+      <h3 style="margin-top:6px">BEng Electronic &amp; Electrical Engineering</h3>
+      <div class="grade">First Class Honours</div>
+      <p>Swansea University, the highest UK degree classification. Dissertation on carbon-nanotube conductors as a replacement for copper wiring. Plus Global Engineering Design (ENGR 410) with Texas A&amp;M: grade A.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Italy</div>
+      <h3 style="margin-top:6px">Diploma in Electronics</h3>
+      <div class="grade">ITIS "E. Fermi"</div>
+      <p>Mantua, Italy. Technical high-school diploma, including a gesture-controlled robot with custom PCBs.</p>
+    </div>
+  </div>
+  <div class="honors">
+    <div><div class="yr">2025</div><div class="t">Most Innovative Engineering Idea, Royal Academy of Engineering (Invent for the Planet)</div></div>
+    <div><div class="yr">2023</div><div class="t">IEEE AP-S / USNC-URSI paper on MUSIC-based anti-jamming software</div></div>
+    <div><div class="yr">2021</div><div class="t">Top Student Award, Electronic &amp; Electrical Engineering Year 2</div></div>
+    <div><div class="yr">2020</div><div class="t">2nd place, Invent for the Planet (Texas A&amp;M / Swansea)</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" aria-labelledby="h-contact">
+  <div class="sec-head">
+    <h2 id="h-contact">Let's build something.</h2>
+    <span class="eyebrow">Detroit area · open to relocation</span>
+  </div>
+  <div class="contact">
+    <p style="font-size:1.1rem">I'm looking for engineering roles in controls and automation, robotics, embedded systems or RF, on the West Coast or remote. I speak English, Italian, Hindi and Punjabi, and I've worked in Italy, Germany, the UK and the US.</p>
+    <dl>
+      <dt>Email</dt>
+      <dd><a href="mailto:singhroby99@gmail.com">singhroby99@gmail.com</a><button type="button" class="copy" id="copy-email">Copy</button></dd>
+      <dt>LinkedIn</dt>
+      <dd><a href="https://www.linkedin.com/in/roby-ksingh/">linkedin.com/in/roby-ksingh</a></dd>
+      <dt>GitHub</dt>
+      <dd><a href="https://github.com/Robysingh">github.com/Robysingh</a></dd>
+      <dt>Location</dt>
+      <dd>Detroit area, MI · relocating West</dd>
+    </dl>
+  </div>
+</section>
+
+<footer class="mono">
+  <span>Roby Karan Singh · Portfolio</span>
+  <span>Rev. C · November 2026</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var btn = document.getElementById('copy-email');
+  btn.addEventListener('click', function(){
+    try{
+      navigator.clipboard.writeText('singhroby99@gmail.com').then(function(){ btn.textContent='Copied'; setTimeout(function(){btn.textContent='Copy';},1600); },
+        function(){ btn.textContent='Select & copy'; });
+    }catch(e){ btn.textContent='Select & copy'; }
+  });
+
+  // Live array pattern: 8-element ULA, d = λ/2, beam at θ0 with a projected null at θ1.
+  var cv = document.getElementById('beam'), ctx = cv.getContext('2d');
+  var N = 8, DB_MIN = -40;
+  var rBeam = document.getElementById('r-beam'), rNull = document.getElementById('r-null'), rDepth = document.getElementById('r-depth');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function steer(th){ var re=[], im=[], s=Math.PI*Math.sin(th); for(var n=0;n<N;n++){ re.push(Math.cos(s*n)); im.push(Math.sin(s*n)); } return [re,im]; }
+  function weights(t0,t1){
+    var a0=steer(t0), a1=steer(t1), cr=0, ci=0;
+    for(var n=0;n<N;n++){ cr += a1[0][n]*a0[0][n] + a1[1][n]*a0[1][n]; ci += a1[0][n]*a0[1][n] - a1[1][n]*a0[0][n]; }
+    cr/=N; ci/=N;
+    var wr=[], wi=[];
+    for(var k=0;k<N;k++){ wr.push(a0[0][k] - (cr*a1[0][k] - ci*a1[1][k])); wi.push(a0[1][k] - (cr*a1[1][k] + ci*a1[0][k])); }
+    return [wr,wi];
+  }
+  function gain(w,th){
+    var s=Math.PI*Math.sin(th), re=0, im=0;
+    for(var n=0;n<N;n++){ var ar=Math.cos(s*n), ai=Math.sin(s*n); re += w[0][n]*ar + w[1][n]*ai; im += w[0][n]*ai - w[1][n]*ar; }
+    return Math.sqrt(re*re+im*im);
+  }
+  function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  function fmt(d){ return (d>=0?'+':'−')+Math.abs(d).toFixed(1)+'°'; }
+
+  function draw(t){
+    var W=cv.width, H=cv.height;
+    var ink=css('--ink'), muted=css('--muted'), line=css('--line'), acc=css('--accent');
+    ctx.clearRect(0,0,W,H);
+    var cx=W/2, cy=H-40, R=Math.min(W/2-70, H-90);
+    var th0 = (5 + 26*Math.sin(t*0.00028)) * Math.PI/180;
+    var th1 = (-48 + 7*Math.sin(t*0.00041 + 1.3)) * Math.PI/180;
+    var w = weights(th0, th1);
+    var pts=[], mx=0, M=361;
+    for(var i=0;i<M;i++){ var th=-Math.PI/2 + Math.PI*i/(M-1); var g=gain(w,th); pts.push([th,g]); if(g>mx) mx=g; }
+
+    ctx.lineWidth=1; ctx.strokeStyle=line; ctx.fillStyle=muted;
+    ctx.font='500 26px "JetBrains Mono", monospace';
+    [0,-10,-20,-30].forEach(function(db){
+      var r=R*(db-DB_MIN)/(-DB_MIN);
+      ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,2*Math.PI); ctx.stroke();
+      ctx.textAlign='left'; ctx.fillText(db+' dB', cx+8, cy-r+28);
+    });
+    for(var a=-90;a<=90;a+=30){
+      var ar=a*Math.PI/180;
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.sin(ar), cy-R*Math.cos(ar)); ctx.stroke();
+      ctx.textAlign='center';
+      ctx.fillText((a>0?'+':a<0?'−':'')+Math.abs(a)+'°', cx+(R+30)*Math.sin(ar), cy-(R+30)*Math.cos(ar)+8);
+    }
+    ctx.beginPath(); ctx.moveTo(cx-R-10,cy); ctx.lineTo(cx+R+10,cy); ctx.strokeStyle=ink; ctx.stroke();
+    ctx.fillStyle=ink;
+    for(var e=0;e<N;e++){ var ex=cx+(e-(N-1)/2)*16; ctx.fillRect(ex-3,cy+8,6,10); }
+
+    ctx.beginPath();
+    pts.forEach(function(p,i){
+      var db=20*Math.log10(Math.max(p[1]/mx,1e-6)); db=Math.max(db,DB_MIN);
+      var r=R*(db-DB_MIN)/(-DB_MIN);
+      var x=cx+r*Math.sin(p[0]), y=cy-r*Math.cos(p[0]);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.closePath();
+    ctx.globalAlpha=.16; ctx.fillStyle=acc; ctx.fill(); ctx.globalAlpha=1;
+    ctx.lineWidth=3; ctx.strokeStyle=acc; ctx.stroke();
+
+    ctx.setLineDash([8,7]); ctx.lineWidth=1.5; ctx.strokeStyle=ink;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.sin(th0), cy-R*Math.cos(th0)); ctx.stroke();
+    ctx.setLineDash([]);
+
+    var jx=cx+(R*0.92)*Math.sin(th1), jy=cy-(R*0.92)*Math.cos(th1);
+    ctx.strokeStyle=ink; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(jx-10,jy-10); ctx.lineTo(jx+10,jy+10); ctx.moveTo(jx+10,jy-10); ctx.lineTo(jx-10,jy+10); ctx.stroke();
+    ctx.fillStyle=ink; ctx.textAlign='left'; ctx.font='600 26px "JetBrains Mono", monospace';
+    ctx.fillText('JAMMER', jx+16, jy+8);
+
+    var depth = 20*Math.log10(Math.max(gain(w,th1)/mx,1e-9));
+    rBeam.textContent = fmt(th0*180/Math.PI);
+    rNull.textContent = fmt(th1*180/Math.PI);
+    rDepth.textContent = depth < -60 ? '< −60 dB' : depth.toFixed(0).replace('-','−')+' dB';
+  }
+
+  var last=0;
+  function loop(ts){ if(ts-last>33){ draw(ts); last=ts; } requestAnimationFrame(loop); }
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ draw(0); }); }
+  draw(0);
+  if(!reduce) requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
