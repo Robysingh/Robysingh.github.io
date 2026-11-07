@@ -156,6 +156,13 @@ section{padding:clamp(56px,8vw,96px) 0 0}
 .sub-head{display:flex; justify-content:space-between; align-items:end; gap:12px; flex-wrap:wrap; margin:56px 0 0; padding-bottom:12px; border-bottom:1px solid var(--ink)}
 .sub-head h3{font-size:1.4rem; font-stretch:115%; font-weight:800}
 
+.photos{grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px}
+@media (max-width:620px){ .photos{grid-template-columns:1fr} }
+.photos figure{margin:0; border:1px solid var(--line); background:var(--surface)}
+.photos img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover}
+.photos img.diagram-img{object-fit:contain; background:#fff}
+.photos figcaption{font-family:var(--mono); font-size:.72rem; color:var(--muted); padding:8px 10px; border-top:1px solid var(--line)}
+
 .note{margin-top:20px; padding:12px 14px; border-left:3px solid var(--accent); background:var(--surface); font-size:.9rem; color:var(--muted); max-width:none}
 
 /* Experience */
@@ -324,22 +331,25 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
       <div class="eyebrow">MSc dissertation · Swansea University · 2025</div>
       <h3>Nova: a customisable robot companion for older adults and people with dementia</h3>
       <div class="meta mono"><span class="hl">Mark: 87%</span><span>User study: 10 participants</span><span>Build cost: ≈ £135</span></div>
-      <p>Commercial robot pets like PARO and Joy for All are expensive and repeat the same behaviour, so users lose interest. I built Nova, a robotic dog whose responses the user chooses: which sound it makes when you stroke its head, body or cheek, depending on your mood.</p>
-      <p>A Raspberry Pi 4 reads the user's facial expression and listens for its name; a Raspberry Pi Pico handles touch, motion and sound in real time. A 10-person user study (NARS scale) gave statistically significant results, and feedback showed that personalisation made the interaction more engaging.</p>
-      <ul class="stack"><li>Python</li><li>Raspberry Pi 4</li><li>Pi Pico</li><li>DeepFace</li><li>openWakeWord / ONNX</li><li>PWM servos</li><li>I2S audio</li><li>Capacitive touch</li></ul>
-      <a class="more" href="https://lnkd.in/egHV5xuZ">Watch the demo videos ↗</a>
+      <p>Commercial robot pets like PARO and Joy for All are expensive and repeat the same behaviour, so users lose interest. I built Nova from scratch inside a £10 dog puppet: a robot dog whose responses the user chooses, including which sound it makes when you stroke its head or body, depending on your mood.</p>
+      <p>A Raspberry Pi 4 reads the user's facial expression and listens for its name; a Raspberry Pi Pico handles touch, motion and sound in real time, with touch sensors I built from resistors and the Pico's own pins. In a 10-person before-and-after study, negative feelings about emotional interaction with robots dropped significantly (NARS emotions subscale, p = .007), and participants valued the customisation most.</p>
+      <ul class="stack"><li>Python</li><li>MicroPython</li><li>Raspberry Pi 4</li><li>Pi Pico</li><li>DeepFace</li><li>openWakeWord / ONNX</li><li>PWM servos</li><li>I2S audio</li><li>Capacitive touch</li></ul>
+      <a class="more" href="https://github.com/Robysingh/nova-robot">Code on GitHub ↗</a>
+      <a class="more" href="https://www.youtube.com/shorts/z6o6pgn4Ftw">Demo 1 ↗</a>
+      <a class="more" href="https://www.youtube.com/shorts/ZIG6oqubzOs">Demo 2 ↗</a>
+      <a class="more" href="https://www.youtube.com/shorts/6OWX88xoWI4">Demo 3 ↗</a>
     </div>
     <div class="diagram" aria-label="System block diagram of Nova">
       <div class="eyebrow">System block diagram</div>
       <div class="blocks">
         <div class="blk">
           <div class="name">Raspberry Pi 4</div>
-          <ul><li>Camera → DeepFace (SSD)</li><li>Emotion every 5th frame</li><li>7 moods → codes 1–7</li><li>Wake words "Nova", "Hey Nova"</li></ul>
+          <ul><li>Camera → DeepFace (SSD)</li><li>Emotion every 5th frame</li><li>7 moods → codes 1–7</li><li>Mic → "Nova", "Hey Nova"</li></ul>
         </div>
-        <div class="link"><span>UART</span><div class="wire"></div><span>9600 baud</span></div>
+        <div class="link"><span>USB serial</span><div class="wire"></div><span>1 char / event</span></div>
         <div class="blk">
           <div class="name">Raspberry Pi Pico</div>
-          <ul><li>3 capacitive touch zones</li><li>Head + tail servos, 50 Hz</li><li>I2S audio, 16 kHz mono</li><li>Mood → sound map</li></ul>
+          <ul><li>3 DIY capacitive touch sensors</li><li>Head + tail servos, 50 Hz</li><li>MAX98357A I2S amp, 16 kHz</li><li>Mood → sound map</li></ul>
         </div>
       </div>
       <div class="io">
@@ -347,6 +357,11 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
         <div><b>Motion</b>head · tail</div>
         <div><b>Sound</b>13 user-selectable clips</div>
       </div>
+    </div>
+    <div class="photos">
+      <figure><img src="nova-front.jpg" alt="Nova, a plush robot dog" loading="lazy" onerror="this.closest('figure').hidden=true"><figcaption>Nova</figcaption></figure>
+      <figure><img src="nova-electronics.jpg" alt="Nova's prototype electronics on a breadboard" loading="lazy" onerror="this.closest('figure').hidden=true"><figcaption>Prototype electronics</figcaption></figure>
+      <figure><img src="nova-schematic.png" alt="Wiring schematic of the Pico, servos, amplifier and touch sensors" loading="lazy" class="diagram-img" onerror="this.closest('figure').hidden=true"><figcaption>Wiring schematic</figcaption></figure>
     </div>
   </article>
 
@@ -535,7 +550,7 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
 
 <footer class="mono">
   <span>Roby Karan Singh · Portfolio</span>
-  <span>Rev. C · November 2026</span>
+  <span>Rev. D · November 2026</span>
 </footer>
 
 </div>
