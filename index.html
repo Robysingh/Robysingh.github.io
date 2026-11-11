@@ -154,6 +154,11 @@ section{padding:clamp(56px,8vw,96px) 0 0}
 .proj p{font-size:.98rem}
 .proj p + p{margin-top:10px}
 .proj .stack{margin-top:auto; padding-top:16px}
+.proj .figs{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:16px}
+.proj .figs figure{margin:0; border:1px solid var(--line); background:var(--surface)}
+.proj .figs a{display:block; background:#fff}
+.proj .figs img{display:block; width:100%; aspect-ratio:4/3; object-fit:contain}
+.proj .figs figcaption{font-family:var(--mono); font-size:.68rem; color:var(--muted); padding:6px 8px; border-top:1px solid var(--line)}
 .sub-head{display:flex; justify-content:space-between; align-items:end; gap:12px; flex-wrap:wrap; margin:56px 0 0; padding-bottom:12px; border-bottom:1px solid var(--ink)}
 .sub-head h3{font-size:1.4rem; font-stretch:115%; font-weight:800}
 
@@ -389,9 +394,13 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
     <article class="proj">
       <div class="eyebrow">Power electronics · BEng · 2021</div>
       <h3>Thyristor rectifier and PWM inverter</h3>
-      <div class="meta mono"><span class="hl">THD 18.7% → 3.98%</span><span>Under IEEE 519 limit (5%)</span><span>Simulink within 1% of hand calc</span></div>
+      <div class="meta mono"><span class="hl">Mark: 100%</span><span>THD 18.7% → 3.98%</span><span>Under IEEE 519 limit (5%)</span></div>
       <p>First, a single-phase fully controlled thyristor rectifier from 240 V RMS mains at a 30° firing angle. I calculated the output by hand (187.1 V DC, 9.4 A) and confirmed it in Simulink (185.4 V). Adding a freewheeling diode removed the negative part of the output waveform and raised it to about 200 V.</p>
-      <p>Second, a four-IGBT full-bridge inverter from 220 V DC driving an RLC load at 60 Hz. Square-wave switching gave 13 A RMS but 18.7% total harmonic distortion. Bipolar sinusoidal PWM cut it to 7.9% at 2.5 kHz and 3.98% at 5 kHz.</p>
+      <p>Second, a four-IGBT full-bridge inverter from 220 V DC driving an RLC load at 60 Hz. Square-wave switching gave 13 A RMS but 18.7% total harmonic distortion in the load current. Bipolar sinusoidal PWM cut it to 7.9% at 2.5 kHz and 3.98% at 5 kHz.</p>
+      <div class="figs">
+        <figure><a href="pe-inverter-current.png" target="_blank" rel="noopener"><img src="pe-inverter-current.png" alt="Inverter load current with square-wave switching (THD 18.7%) and with sinusoidal PWM at 5 kHz (THD 3.98%)" loading="lazy" onerror="this.closest('figure').hidden=true"></a><figcaption>Load current: before and after PWM</figcaption></figure>
+        <figure><a href="pe-inverter-model.png" target="_blank" rel="noopener"><img src="pe-inverter-model.png" alt="Simulink model of the IGBT full-bridge inverter with sine-triangle PWM" loading="lazy" onerror="this.closest('figure').hidden=true"></a><figcaption>Simulink inverter model</figcaption></figure>
+      </div>
       <ul class="stack"><li>Simulink</li><li>Thyristors</li><li>IGBTs</li><li>Sinusoidal PWM</li><li>Harmonic analysis</li></ul>
     </article>
     <article class="proj">
