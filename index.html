@@ -388,6 +388,10 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
       <div class="eyebrow">Group design exercise · Team manager · 2021</div>
       <h3>Team Delta Micromouse</h3>
       <p>An autonomous differential-drive robot with collision awareness, line tracking and a combat mode. I was team manager for a group of five, ran the project plan and built the team website. The robot used an AW60 microcontroller, IR collision and touch-bar sensors, an LDR line sensor, wheel encoders and a battery monitor.</p>
+      <div class="figs">
+        <figure><a href="mm-robot.jpg" target="_blank" rel="noopener"><img src="mm-robot.jpg" alt="The micromouse: a two-layer blue chassis carrying the Freescale AW60 controller board" loading="lazy" onerror="this.closest('figure').hidden=true"></a><figcaption>Chassis and AW60 controller</figcaption></figure>
+        <figure><a href="mm-architecture.png" target="_blank" rel="noopener"><img src="mm-architecture.png" alt="System architecture: sensors, AW60 microcontroller, motors and power management" loading="lazy" onerror="this.closest('figure').hidden=true"></a><figcaption>System architecture</figcaption></figure>
+      </div>
       <a class="more" href="https://teamdelta2021.wordpress.com/">Team site ↗</a>
       <ul class="stack"><li>Freescale AW60</li><li>Sensors</li><li>PCB build</li><li>Project management</li></ul>
     </article>
@@ -404,12 +408,16 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
       <ul class="stack"><li>Simulink</li><li>Thyristors</li><li>IGBTs</li><li>Sinusoidal PWM</li><li>Harmonic analysis</li></ul>
     </article>
     <article class="proj">
-      <div class="eyebrow">Electrical machines lab · BEng · 2020</div>
+      <div class="eyebrow">Electrical machines · BEng · 2020</div>
       <h3>DC motor speed control</h3>
-      <div class="meta mono"><span class="hl">3 control methods tested</span><span>PI controller in Simulink</span></div>
-      <p>In the lab I compared three ways to control a DC motor's speed. Raising field resistance from 240 to 400 Ω took no-load speed from 1,270 to 2,106 rpm. Raising armature voltage from 160 to 320 V took it from 847 to 1,700 rpm. Adding armature resistance left no-load speed at about 1,250 rpm but made speed fall faster under load.</p>
-      <p>I then modelled a permanent-magnet DC motor in Simulink from measured parameters (R<sub>a</sub> 4.8 Ω, L<sub>a</sub> 56.9 mH) and tuned a PI speed controller, with the best response at K<sub>p</sub> 0.015–0.02 and K<sub>i</sub> 0.06–0.08.</p>
-      <ul class="stack"><li>Simulink</li><li>PI control</li><li>Motor modelling</li><li>Lab testing</li></ul>
+      <div class="meta mono"><span class="hl">4 control strategies compared</span><span>PI and cascade control</span></div>
+      <p>I modelled a DC motor in Simulink and compared three ways to control its speed under loads up to 500 Nm. Raising field resistance from 240 to 400 Ω lifted no-load speed from 1,270 to 2,106 rpm, but above about 300 Nm of load it slowed the motor instead. Raising armature voltage from 160 to 320 V doubled no-load speed (847 → 1,700 rpm) without changing the speed-torque slope. Extra armature resistance kept no-load speed near 1,250 rpm but made the motor stall sooner.</p>
+      <p>I then closed the loop with a PI controller and swept the gains, with the cleanest tracking at K<sub>p</sub> 0.015–0.02 and K<sub>i</sub> 0.06–0.08. I also designed a cascade speed and current controller for a small permanent-magnet motor, with a 300 Hz current loop inside a 30 Hz speed loop.</p>
+      <div class="figs">
+        <figure><a href="dc-speed-torque.png" target="_blank" rel="noopener"><img src="dc-speed-torque.png" alt="Simulated motor speed against load torque for field resistances from 240 to 400 ohms" loading="lazy" onerror="this.closest('figure').hidden=true"></a><figcaption>Speed vs torque, varying field resistance</figcaption></figure>
+        <figure><a href="dc-pi-response.png" target="_blank" rel="noopener"><img src="dc-pi-response.png" alt="Closed-loop speed step response for proportional gains from 0.0025 to 0.02" loading="lazy" onerror="this.closest('figure').hidden=true"></a><figcaption>PI speed response, varying Kp</figcaption></figure>
+      </div>
+      <ul class="stack"><li>Simulink</li><li>PI control</li><li>Cascade control</li><li>Motor modelling</li></ul>
     </article>
     <article class="proj">
       <div class="eyebrow">Diploma project · ITIS E. Fermi, Mantua · 2018</div>
