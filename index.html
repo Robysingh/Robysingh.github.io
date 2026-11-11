@@ -388,15 +388,19 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
     </article>
     <article class="proj">
       <div class="eyebrow">Power electronics · BEng · 2021</div>
-      <h3>Rectifier and PWM inverter design</h3>
-      <p>Designed and simulated a thyristor full-wave rectifier and an IGBT full-bridge inverter. Adding bipolar sinusoidal PWM at 5 kHz brought output distortion down from 18.7% to 3.98% THD, within the IEEE 519 limit of 5%.</p>
-      <ul class="stack"><li>Simulink</li><li>Thyristors</li><li>IGBTs</li><li>PWM</li></ul>
+      <h3>Thyristor rectifier and PWM inverter</h3>
+      <div class="meta mono"><span class="hl">THD 18.7% → 3.98%</span><span>Under IEEE 519 limit (5%)</span><span>Simulink within 1% of hand calc</span></div>
+      <p>First, a single-phase fully controlled thyristor rectifier from 240 V RMS mains at a 30° firing angle. I calculated the output by hand (187.1 V DC, 9.4 A) and confirmed it in Simulink (185.4 V). Adding a freewheeling diode removed the negative part of the output waveform and raised it to about 200 V.</p>
+      <p>Second, a four-IGBT full-bridge inverter from 220 V DC driving an RLC load at 60 Hz. Square-wave switching gave 13 A RMS but 18.7% total harmonic distortion. Bipolar sinusoidal PWM cut it to 7.9% at 2.5 kHz and 3.98% at 5 kHz.</p>
+      <ul class="stack"><li>Simulink</li><li>Thyristors</li><li>IGBTs</li><li>Sinusoidal PWM</li><li>Harmonic analysis</li></ul>
     </article>
     <article class="proj">
       <div class="eyebrow">Electrical machines lab · BEng · 2020</div>
       <h3>DC motor speed control</h3>
-      <p>Compared field-resistance, armature-voltage and armature-resistance speed control on a DC motor in the lab, then modelled a permanent-magnet DC motor in Simulink and tuned a PI speed controller against it.</p>
-      <ul class="stack"><li>Simulink</li><li>PI control</li><li>Motor modelling</li></ul>
+      <div class="meta mono"><span class="hl">3 control methods tested</span><span>PI controller in Simulink</span></div>
+      <p>In the lab I compared three ways to control a DC motor's speed. Raising field resistance from 240 to 400 Ω took no-load speed from 1,270 to 2,106 rpm. Raising armature voltage from 160 to 320 V took it from 847 to 1,700 rpm. Adding armature resistance left no-load speed at about 1,250 rpm but made speed fall faster under load.</p>
+      <p>I then modelled a permanent-magnet DC motor in Simulink from measured parameters (R<sub>a</sub> 4.8 Ω, L<sub>a</sub> 56.9 mH) and tuned a PI speed controller, with the best response at K<sub>p</sub> 0.015–0.02 and K<sub>i</sub> 0.06–0.08.</p>
+      <ul class="stack"><li>Simulink</li><li>PI control</li><li>Motor modelling</li><li>Lab testing</li></ul>
     </article>
     <article class="proj">
       <div class="eyebrow">Diploma project · ITIS E. Fermi, Mantua · 2018</div>
