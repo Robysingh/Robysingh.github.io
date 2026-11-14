@@ -315,11 +315,11 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
       <ul class="stack"><li>CST Studio Suite</li><li>Patch antennas</li><li>FSS</li><li>Far-field analysis</li></ul>
     </article>
     <article class="proj">
-      <div class="eyebrow">Drone anti-jamming · with the UK MoD · design to measurement</div>
-      <h3>GPS anti-jamming antenna for drones</h3>
-      <p>I worked on this project from the first design to the final measurements. I designed the GPS L1 antenna array, which the team drove with STM32-based anti-jamming firmware, and measured its radiation patterns in an anechoic chamber to check them against simulation.</p>
-      <p>To find steering settings that suppress the array's backlobe, I wrote MATLAB scripts that sweep over a thousand phase and amplitude combinations against simulated pattern data and list every combination that produces a null at a given angle. Over six versions the tool went from a manual 8-angle check to a fully automated sweep from 80° to 280°.</p>
-      <ul class="stack"><li>Antenna array design</li><li>Anechoic-chamber measurement</li><li>STM32</li><li>MATLAB automation</li></ul>
+      <div class="eyebrow">UAV anti-jamming · with the UK MoD</div>
+      <h3>GPS anti-jamming antenna for UAV systems</h3>
+      <p>I worked on this project from the initial design through to final measurements: I designed the antenna array, integrated it with the team's embedded anti-jamming system, and verified its measured radiation patterns against simulation.</p>
+      <p>I also wrote MATLAB tools that automatically search phase and amplitude settings for the ones that suppress the array's backlobe.</p>
+      <ul class="stack"><li>Antenna array design</li><li>Pattern measurement</li><li>Embedded integration</li><li>MATLAB automation</li></ul>
     </article>
   </div>
   <p class="note">Some of this work was carried out under defence contracts and is confidential, so I describe it here only at a high level.</p>
@@ -471,7 +471,7 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
         <div class="org">Smart Antenna &amp; Communications Laboratory, Swansea University · team leader (2023–24)</div>
         <ul>
           <li>Ran the final phase of a UK defence-funded anti-jamming project: wrote the SDR control software in GNU Radio from scratch, ran the lab demonstration and wrote the final milestone report.</li>
-          <li>Researched GPS L1 antennas, beam steering, null steering and anti-jamming, including drone anti-jamming work with the UK Ministry of Defence.</li>
+          <li>Researched GPS L1 antennas, beam steering, null steering and anti-jamming, including UAV anti-jamming work with the UK Ministry of Defence.</li>
           <li>Wrote the final report for CASSIS, an ESA ARTES project on Ka-band satellite antennas for vehicles, and attended weekly progress meetings with Satellite Applications Catapult.</li>
           <li>Built a MATLAB-to-CST simulation pipeline and an anti-jamming app published at IEEE AP-S / USNC-URSI 2023.</li>
           <li>Fabricated antennas in the lab on a ProtoMat S63 CNC milling machine.</li>
