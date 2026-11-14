@@ -315,10 +315,11 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
       <ul class="stack"><li>CST Studio Suite</li><li>Patch antennas</li><li>FSS</li><li>Far-field analysis</li></ul>
     </article>
     <article class="proj">
-      <div class="eyebrow">Drone anti-jamming · with the UK MoD</div>
-      <h3>Automated backlobe suppression search</h3>
-      <p>For a 2×2 drone antenna array, I wrote MATLAB scripts that sweep over a thousand phase and amplitude combinations against simulated pattern data and table every combination that produces a null at a given angle. Over six versions the tool went from a manual 8-angle check to a fully automated sweep from 80° to 280°.</p>
-      <ul class="stack"><li>MATLAB Live Scripts</li><li>Pattern data processing</li><li>Automation</li></ul>
+      <div class="eyebrow">Drone anti-jamming · with the UK MoD · design to measurement</div>
+      <h3>GPS anti-jamming antenna for drones</h3>
+      <p>I worked on this project from the first design to the final measurements. I designed the GPS L1 antenna array, which the team drove with STM32-based anti-jamming firmware, and measured its radiation patterns in an anechoic chamber to check them against simulation.</p>
+      <p>To find steering settings that suppress the array's backlobe, I wrote MATLAB scripts that sweep over a thousand phase and amplitude combinations against simulated pattern data and list every combination that produces a null at a given angle. Over six versions the tool went from a manual 8-angle check to a fully automated sweep from 80° to 280°.</p>
+      <ul class="stack"><li>Antenna array design</li><li>Anechoic-chamber measurement</li><li>STM32</li><li>MATLAB automation</li></ul>
     </article>
   </div>
   <p class="note">Some of this work was carried out under defence contracts and is confidential, so I describe it here only at a high level.</p>
