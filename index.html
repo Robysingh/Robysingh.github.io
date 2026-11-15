@@ -52,7 +52,7 @@ h2{font-size:clamp(1.9rem,3.6vw,2.7rem); font-weight:800; font-stretch:118%; let
 h3{font-size:1.28rem; font-weight:700; font-stretch:108%; line-height:1.2}
 p{margin:0; max-width:65ch}
 
-.top{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:18px 0; border-bottom:1px solid var(--line)}
+.top{display:flex; align-items:center; justify-content:flex-end; gap:16px; flex-wrap:wrap; padding:18px 0; border-bottom:1px solid var(--line)}
 .mark{font-family:var(--display); font-weight:800; font-stretch:125%; font-size:1rem; letter-spacing:.02em; text-decoration:none}
 .mark span{color:var(--accent)}
 nav{display:flex; gap:20px; flex-wrap:wrap}
@@ -65,6 +65,8 @@ nav a:hover{color:var(--ink)}
 .hero h1{font-size:clamp(2.6rem,6.4vw,5rem); font-weight:850; font-stretch:125%; letter-spacing:-.02em; line-height:.98; margin:14px 0 22px}
 .hero h1 em{font-style:normal; color:var(--accent)}
 .hero .lede{font-size:1.12rem}
+.hero h1.name{font-size:clamp(2.1rem,4.6vw,3.3rem); font-weight:800; font-stretch:125%; letter-spacing:.01em; line-height:1; margin:0 0 18px}
+.hero h1.name span{color:var(--accent)}
 .hero .eyebrow + .lede{margin-top:16px}
 .hero .lede + .lede{margin-top:12px; color:var(--muted); font-size:1rem}
 .actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:28px}
@@ -214,8 +216,7 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
 <body>
 <div class="sheet">
 
-<header class="top">
-  <a class="mark" href="#top" id="top">ROBY KARAN SINGH<span>.</span></a>
+<header class="top" id="top">
   <nav aria-label="Sections">
     <a href="#research">RF research</a>
     <a href="#projects">Projects</a>
@@ -227,6 +228,7 @@ footer{border-top:1.5px solid var(--ink); padding:14px 0 24px; display:flex; jus
 
 <div class="hero">
   <div>
+    <h1 class="name">ROBY KARAN SINGH<span>.</span></h1>
     <div class="eyebrow">BEng Electronic &amp; Electrical Eng. · MSc Computer Science</div>
     <p class="lede">I'm an engineer who works across the whole stack of a machine: antennas and RF, circuits, embedded code and the industrial robots at the end of the line.</p>
     <p class="lede">At Swansea University's Smart Antenna Lab I built anti-jamming software and ran the lab demonstration of a UK defence-funded wideband beam- and null-steering system. For my MSc I built a socially assistive robot. Today I commission Kawasaki robot workcells and Omron PLC systems on a 24/7 production floor in Michigan.</p>
